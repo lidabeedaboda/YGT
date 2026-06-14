@@ -7,44 +7,59 @@ if (!global.resetTime) {
     global.resetTime = Date.now() + RESET;
 }
 
-export default function handler(req,res){
+export default function handler(req, res) {
 
-    if(Date.now() > global.resetTime){
+    // RESET SYSTEM (every 7 days)
+    if (Date.now() > global.resetTime) {
         global.players = {};
         players = global.players;
         global.resetTime = Date.now() + RESET;
     }
 
-    if(req.method === "POST"){
+    // ================= POST (ROBLOX SENDS DATA) =================
+    if (req.method === "POST") {
 
-        const {username,userId,minutes,rank} = req.body;
+        const { username, userId, minutes, rank } = req.body;
 
-        if(!players[userId]){
-            players[userId]={
+        if (!username || !userId) {
+            return res.status(400).json({ error: "Missing data" });
+        }
+
+        // CREATE PLAYER IF NOT EXISTS
+        if (!players[userId]) {
+            players[userId] = {
                 username,
                 userId,
-                minutes:0,
-                rank:"Guest"
+                minutes: 0,
+                rank: rank && rank !== "" ? rank : "Loading..."
             };
         }
 
-        if(minutes) players[userId].minutes += minutes;
-        if(rank) players[userId].rank = rank;
+        // UPDATE MINUTES
+        if (typeof minutes === "number") {
+            players[userId].minutes += minutes;
+        }
 
-        return res.json({ok:true});
+        // UPDATE RANK ONLY IF VALID
+        if (rank && rank !== "" && rank !== "Guest") {
+            players[userId].rank = rank;
+        }
+
+        return res.json({ ok: true });
     }
 
-    if(req.method === "GET"){
+    // ================= GET (LEADERBOARD) =================
+    if (req.method === "GET") {
 
         const list = Object.values(players)
-        .sort((a,b)=>b.minutes-a.minutes)
-        .slice(0,100);
+            .sort((a, b) => b.minutes - a.minutes)
+            .slice(0, 100);
 
         return res.json({
-            players:list,
-            resetAt:global.resetTime
+            players: list,
+            resetAt: global.resetTime
         });
     }
 
-    res.status(405).end();
+    return res.status(405).end();
 }
