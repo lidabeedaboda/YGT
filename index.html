@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You've Got Talent - Ban Appeal</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+<title>🌟 You've Got Talent</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -15,101 +16,97 @@
     font-family:'Fredoka',sans-serif;
 }
 
+:root{
+    --gold:#facc15;
+    --purple:#7c3aed;
+    --card:rgba(255,255,255,.08);
+    --border:rgba(255,255,255,.12);
+}
+
 body{
-    background:linear-gradient(135deg,#0f172a,#1e293b,#312e81);
-    color:white;
     min-height:100vh;
-}
-
-header{
-    text-align:center;
-    padding:80px 20px;
-}
-
-header h1{
-    font-size:4rem;
-    margin-bottom:10px;
-    text-shadow:0 0 20px gold;
-}
-
-header p{
-    opacity:.85;
-    font-size:1.2rem;
-}
-
-nav{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-bottom:50px;
-}
-
-nav a{
-    text-decoration:none;
-    color:white;
-    background:rgba(255,255,255,.1);
-    padding:12px 20px;
-    border-radius:999px;
-    transition:.3s;
-}
-
-nav a:hover{
-    background:gold;
-    color:black;
-}
-
-.section{
-    max-width:1100px;
-    margin:auto;
-    padding:40px 20px;
-}
-
-.card{
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(12px);
-    border:1px solid rgba(255,255,255,.15);
-    border-radius:20px;
     padding:30px;
+
+    background:
+    radial-gradient(circle at top,
+    #facc15 0%,
+    #7c3aed 35%,
+    #0f172a 100%);
+
+    color:white;
 }
 
-h2{
-    margin-bottom:20px;
-    font-size:2rem;
+.header{
+    max-width:1200px;
+    margin:0 auto 25px auto;
+    text-align:center;
 }
 
-.grid{
+.header h1{
+    font-size:3rem;
+    text-shadow:0 0 25px rgba(250,204,21,.8);
+}
+
+.header p{
+    opacity:.8;
+    margin-top:8px;
+}
+
+.dashboard{
+    max-width:1200px;
+    margin:auto;
+
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:20px;
 }
 
-.feature{
-    background:rgba(255,255,255,.05);
-    padding:20px;
-    border-radius:15px;
+.widget{
+    background:var(--card);
+    backdrop-filter:blur(20px);
+
+    border:1px solid var(--border);
+
+    border-radius:28px;
+
+    padding:25px;
+
+    box-shadow:
+    0 0 30px rgba(250,204,21,.15);
+
+    transition:.25s;
 }
 
-.appeal-form{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+.widget:hover{
+    transform:translateY(-3px);
+}
+
+.widget h2{
+    margin-bottom:12px;
+}
+
+.widget p{
+    opacity:.9;
+    line-height:1.6;
 }
 
 input,
 textarea,
 select{
     width:100%;
-    padding:14px;
-    border:none;
-    border-radius:12px;
-    background:rgba(255,255,255,.1);
-    color:white;
-}
 
-input::placeholder,
-textarea::placeholder{
-    color:#ddd;
+    padding:14px;
+
+    border:none;
+
+    border-radius:16px;
+
+    margin-top:12px;
+
+    background:rgba(255,255,255,.08);
+
+    color:white;
+
+    outline:none;
 }
 
 textarea{
@@ -117,131 +114,186 @@ textarea{
     resize:vertical;
 }
 
+input::placeholder,
+textarea::placeholder{
+    color:#ddd;
+}
+
 button{
-    background:gold;
-    color:black;
+    width:100%;
+
+    margin-top:15px;
+
     border:none;
-    padding:15px;
-    border-radius:12px;
+
+    border-radius:16px;
+
+    padding:16px;
+
     cursor:pointer;
+
     font-size:1rem;
-    font-weight:bold;
+    font-weight:700;
+
+    background:
+    linear-gradient(
+    90deg,
+    #facc15,
+    #f59e0b);
+
+    color:black;
+
+    transition:.25s;
 }
 
 button:hover{
-    transform:translateY(-2px);
+    transform:scale(1.02);
 }
 
 .success{
     display:none;
-    margin-top:20px;
-    background:#16a34a;
+
+    margin-top:15px;
+
     padding:15px;
-    border-radius:12px;
+
+    border-radius:16px;
+
+    background:#22c55e;
 }
 
-footer{
+.announcement{
+    padding:12px;
+    border-radius:14px;
+    background:rgba(255,255,255,.05);
+    margin-top:10px;
+}
+
+.hidden-card{
     text-align:center;
-    padding:40px;
+    padding:25px;
+    background:rgba(0,0,0,.2);
+    border-radius:18px;
+    margin-top:10px;
+}
+
+.footer{
+    text-align:center;
+    margin-top:30px;
     opacity:.7;
+}
+
+@media(max-width:700px){
+    body{
+        padding:15px;
+    }
+
+    .header h1{
+        font-size:2.2rem;
+    }
 }
 </style>
 </head>
 <body>
 
-<header>
+<div class="header">
     <h1>🌟 You've Got Talent</h1>
-    <p>Showcasing talent, creativity, and community.</p>
-</header>
+    <p>Home of the Talent Show</p>
+</div>
 
-<nav>
-    <a href="#about">About</a>
-    <a href="#events">Events</a>
-    <a href="#appeal">📋 Ban Appeal</a>
-</nav>
+<div class="dashboard">
 
-<section class="section" id="about">
-    <div class="card">
-        <h2>🎤 About You've Got Talent</h2>
+    <div class="widget">
+        <h2>👋 Welcome</h2>
         <p>
-            Welcome to You've Got Talent! A place where performers,
-            creators, and community members can showcase their skills
-            and participate in exciting talent competitions.
+            Welcome to You've Got Talent - Home of the talent show.
         </p>
     </div>
-</section>
 
-<section class="section" id="events">
-    <div class="grid">
-        <div class="feature">
-            <h3>🎵 Singing</h3>
-            <p>Show off your vocal talents.</p>
-        </div>
+    <div class="widget">
+        <h2>📌 Pinned Announcements</h2>
 
-        <div class="feature">
-            <h3>💃 Dancing</h3>
-            <p>Impress the judges with your moves.</p>
-        </div>
-
-        <div class="feature">
-            <h3>🎭 Performing</h3>
-            <p>Comedy, acting, magic, and more.</p>
+        <div class="announcement">
+            📣 Sneak peaks are being posted more than ever now!
         </div>
     </div>
-</section>
 
-<section class="section" id="appeal">
-    <div class="card">
-        <h2>📋 Ban Appeal</h2>
+    <div class="widget">
+        <h2>🎊 Events</h2>
+        <p>No upcoming events.</p>
+    </div>
 
-        <form class="appeal-form" id="appealForm">
+    <div class="widget">
+        <h2>🗓️ Activity Tracker</h2>
+
+        <div class="hidden-card">
+            🔒 You can't see this page!
+        </div>
+    </div>
+
+    <div class="widget">
+        <h2>🚨 Ban Appeals</h2>
+
+        <form id="appealForm">
 
             <input
-                type="text"
-                id="discord"
-                placeholder="Discord Username & ID"
-                required>
+            type="text"
+            id="discord"
+            placeholder="Discord Username & ID"
+            required>
 
             <input
-                type="text"
-                id="roblox"
-                placeholder="Roblox Username & ID"
-                required>
+            type="text"
+            id="roblox"
+            placeholder="Roblox Username & ID"
+            required>
 
             <textarea
-                id="reason"
-                placeholder="Why were you moderated?"
-                required></textarea>
+            id="reason"
+            placeholder="Why were you moderated?"
+            required></textarea>
 
             <textarea
-                id="future"
-                placeholder="What can you do in the future to improve?"
-                required></textarea>
+            id="future"
+            placeholder="What can you do in the future to improve?"
+            required></textarea>
 
             <select id="tos" required>
-                <option value="">Do you agree to follow all You've Got Talent TOS?</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
+                <option value="">
+                    Do you agree to follow all You've Got Talent TOS?
+                </option>
+
+                <option value="Yes">
+                    Yes
+                </option>
+
+                <option value="No">
+                    No
+                </option>
             </select>
 
             <button type="submit">
-                Submit Appeal
+                ✨ Submit Appeal
             </button>
 
         </form>
 
         <div class="success" id="successMessage">
-            Thank you for submitting your appeal. Your appeal status will be sent to you.
+            Thank you for submitting your appeal.
+            Your appeal status will be sent to you.
         </div>
-    </div>
-</section>
 
-<footer>
+    </div>
+
+</div>
+
+<div class="footer">
     © 2026 You've Got Talent
-</footer>
+</div>
 
 <script>
 document.getElementById("appealForm").addEventListener("submit", async (e) => {
+
     e.preventDefault();
 
     const data = {
@@ -252,23 +304,34 @@ document.getElementById("appealForm").addEventListener("submit", async (e) => {
         tos: document.getElementById("tos").value
     };
 
-    try {
+    try{
 
-        // Replace with YOUR backend endpoint
-        await fetch("/api/appeal", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
+        const response = await fetch("/api/appeal",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
             },
-            body: JSON.stringify(data)
+            body:JSON.stringify(data)
         });
 
+        if(!response.ok){
+            throw new Error("Failed");
+        }
+
         document.getElementById("appealForm").reset();
+
         document.getElementById("successMessage").style.display = "block";
 
-    } catch (err) {
-        alert("Failed to submit appeal.");
+    }catch(err){
+
+        alert(
+            "Unable to submit appeal. Please try again later."
+        );
+
+        console.error(err);
+
     }
+
 });
 </script>
 
