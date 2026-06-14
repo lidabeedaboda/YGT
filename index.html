@@ -1,335 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aloha Development</title>
+let players = global.players || {};
+global.players = players;
 
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+const RESET = 7 * 24 * 60 * 60 * 1000;
 
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-/* ================= LOADING ================= */
-#loading{
-    position:fixed;
-    inset:0;
-    background:linear-gradient(135deg,#60a5fa,#93c5fd);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-    color:white;
+if (!global.resetTime) {
+    global.resetTime = Date.now() + RESET;
 }
 
-.spinner{
-    width:60px;
-    height:60px;
-    border:6px solid rgba(255,255,255,.3);
-    border-top:6px solid white;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
+export default function handler(req,res){
+
+    if(Date.now() > global.resetTime){
+        global.players = {};
+        players = global.players;
+        global.resetTime = Date.now() + RESET;
+    }
+
+    if(req.method === "POST"){
+
+        const {username,userId,minutes,rank} = req.body;
+
+        if(!players[userId]){
+            players[userId]={
+                username,
+                userId,
+                minutes:0,
+                rank:"Guest"
+            };
+        }
+
+        if(minutes) players[userId].minutes += minutes;
+        if(rank) players[userId].rank = rank;
+
+        return res.json({ok:true});
+    }
+
+    if(req.method === "GET"){
+
+        const list = Object.values(players)
+        .sort((a,b)=>b.minutes-a.minutes)
+        .slice(0,100);
+
+        return res.json({
+            players:list,
+            resetAt:global.resetTime
+        });
+    }
+
+    res.status(405).end();
 }
-
-@keyframes spin{
-    100%{transform:rotate(360deg);}
-}
-
-/* ================= BASE ================= */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Fredoka',sans-serif;
-}
-
-body{
-    background:#eaf4ff;
-    color:#0f172a;
-    padding:25px;
-}
-
-/* ================= HEADER ================= */
-.header{
-    text-align:center;
-    margin-bottom:20px;
-}
-
-.header h1{
-    font-size:3rem;
-    color:#2563eb;
-}
-
-/* ================= GRID ================= */
-.dashboard{
-    max-width:1300px;
-    margin:auto;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-}
-
-/* ================= WIDGET ================= */
-.widget{
-    background:white;
-    border-radius:22px;
-    padding:20px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-}
-
-h2{
-    color:#1d4ed8;
-    margin-bottom:10px;
-}
-
-/* ================= ANNOUNCEMENTS ================= */
-.announcement{
-    background:#eff6ff;
-    padding:12px;
-    border-radius:14px;
-    margin-top:10px;
-}
-
-/* ================= EVENTS SMALL ================= */
-.small{
-    font-size:.9rem;
-    opacity:.8;
-}
-
-/* ================= TRACKER ================= */
-.scroll-box{
-    height:280px;
-    overflow-y:auto;
-    background:#f1f7ff;
-    padding:10px;
-    border-radius:14px;
-}
-
-.player{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px;
-    background:white;
-    border-radius:12px;
-    margin-bottom:8px;
-}
-
-.player-left{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-/* ================= FORM ================= */
-input,textarea,select{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border-radius:12px;
-    border:1px solid #cbd5e1;
-}
-
-button{
-    width:100%;
-    margin-top:12px;
-    padding:14px;
-    border:none;
-    border-radius:12px;
-    background:#3b82f6;
-    color:white;
-    font-weight:600;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#2563eb;
-}
-
-/* ================= POPUP ================= */
-.popup{
-    position:fixed;
-    top:20px;
-    right:20px;
-    background:#22c55e;
-    color:white;
-    padding:12px 16px;
-    border-radius:12px;
-    display:none;
-}
-
-.countdown{
-    margin-top:10px;
-    font-size:12px;
-    opacity:0.7;
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- LOADING -->
-<div id="loading">
-    <div class="spinner"></div>
-    <p style="margin-top:15px;">Loading Site..</p>
-</div>
-
-<div class="popup" id="popup">🎉 Appeal Submitted!</div>
-
-<!-- HEADER -->
-<div class="header">
-    <h1>Aloha Development</h1>
-    <p>Home of "You've Got Talent"!</p>
-</div>
-
-<!-- DASHBOARD -->
-<div class="dashboard">
-
-<!-- WELCOME -->
-<div class="widget">
-    <h2>👋 Welcome</h2>
-    <p>Welcome to You've Got Talent — the home of creativity and talent shows.</p>
-
-    <div class="announcement">
-        📌 Sneak peeks are being posted more than ever!
-    </div>
-</div>
-
-<!-- EVENTS (SMALL) -->
-<div class="widget">
-    <h2>🎊 Events</h2>
-    <p class="small">No upcoming events.</p>
-</div>
-
-<!-- TRACKER -->
-<div class="widget">
-    <h2>📊 Activity Tracker</h2>
-
-    <div class="scroll-box" id="playerList"></div>
-
-    <div class="countdown" id="countdown"></div>
-</div>
-
-<!-- BAN APPEALS -->
-<div class="widget">
-    <h2>🚨 Ban Appeals</h2>
-
-    <form id="appealForm">
-
-        <input id="discord" placeholder="Discord Username & ID" required>
-        <input id="roblox" placeholder="Roblox Username & ID" required>
-
-        <textarea id="reason" placeholder="Why were you moderated?" required></textarea>
-
-        <textarea id="future" placeholder="How will you improve?" required></textarea>
-
-        <select id="tos" required>
-            <option value="">Agree to TOS?</option>
-            <option>Yes</option>
-            <option>No</option>
-        </select>
-
-        <button type="submit">Submit Appeal</button>
-
-    </form>
-
-</div>
-
-</div>
-
-<!-- SCRIPT -->
-<script>
-
-setTimeout(()=>{
-    document.getElementById("loading").style.display="none";
-},10000);
-
-/* POPUP */
-function showPopup(){
-    const p=document.getElementById("popup");
-    p.style.display="block";
-    setTimeout(()=>p.style.display="none",3000);
-}
-
-/* APPEAL */
-document.getElementById("appealForm").addEventListener("submit", async (e)=>{
-
-    e.preventDefault();
-
-    const data={
-        discord:discord.value,
-        roblox:roblox.value,
-        reason:reason.value,
-        future:future.value,
-        tos:tos.value
-    };
-
-    await fetch("/api/appeal",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify(data)
-    });
-
-    document.getElementById("appealForm").reset();
-    showPopup();
-});
-
-/* ================= TRACKER SYSTEM ================= */
-
-const GROUP_ID = 927932356;
-let resetTime = Date.now() + (7*24*60*60*1000);
-
-function format(ms){
-    let s = Math.floor(ms/1000);
-    let d = Math.floor(s/86400); s%=86400;
-    let h = Math.floor(s/3600); s%=3600;
-    let m = Math.floor(s/60);
-    let sec = s%60;
-    return `${d}d ${h}h ${m}m ${sec}s`;
-}
-
-async function loadPlayers(){
-
-    const res = await fetch("/api/players");
-    const data = await res.json();
-
-    const box = document.getElementById("playerList");
-    box.innerHTML="";
-
-    data.players.forEach((p,i)=>{
-
-        const headshot = `https://www.roblox.com/headshot-thumbnail/image?userId=${p.userId}&width=100&height=100&format=png`;
-
-        const div=document.createElement("div");
-        div.className="player";
-
-        div.innerHTML=`
-            <div class="player-left">
-                <img src="${headshot}" width="40" height="40" style="border-radius:50%;">
-                <span>#${i+1} ${p.username} | ${p.rank}</span>
-            </div>
-            <span>⏱ ${p.minutes || 0} min</span>
-        `;
-
-        box.appendChild(div);
-    });
-
-    resetTime = data.resetAt;
-}
-
-/* countdown */
-setInterval(()=>{
-    document.getElementById("countdown").innerText =
-        "Leaderboard resets in: " + format(resetTime - Date.now());
-},1000);
-
-setInterval(loadPlayers,5000);
-loadPlayers();
-
-</script>
-
-</body>
-</html>
