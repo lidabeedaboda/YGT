@@ -11,6 +11,33 @@
 
 <style>
 
+/* ========== LOADING SCREEN ========== */
+#loading {
+    position:fixed;
+    inset:0;
+    background:linear-gradient(135deg,#60a5fa,#3b82f6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    color:white;
+    z-index:9999;
+}
+
+.spinner {
+    width:60px;
+    height:60px;
+    border:6px solid rgba(255,255,255,.3);
+    border-top:6px solid white;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% { transform:rotate(360deg); }
+}
+
+/* ========== MAIN THEME ========== */
 *{
     margin:0;
     padding:0;
@@ -19,92 +46,103 @@
 }
 
 body{
-    min-height:100vh;
+    background:#eaf4ff;
+    color:#0f172a;
     padding:30px;
-    background:#f4f7ff;
-    color:#111;
 }
 
+/* ========== HEADER ========== */
 .header{
     text-align:center;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
 .header h1{
-    font-size:2.8rem;
+    font-size:3rem;
+    color:#2563eb;
 }
 
+/* ========== DASHBOARD GRID ========== */
 .dashboard{
-    max-width:1200px;
+    max-width:1300px;
     margin:auto;
     display:grid;
-    grid-template-columns:1.6fr 1fr;
-    gap:20px;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
 }
 
+/* ========== WIDGETS ========== */
 .widget{
     background:white;
-    border-radius:24px;
-    padding:22px;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    border-radius:22px;
+    padding:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
 }
 
 h2{
-    margin-bottom:12px;
+    color:#1d4ed8;
+    margin-bottom:10px;
 }
 
-.announcement{
-    background:#f1f5ff;
-    padding:14px;
+/* ========== EVENTS SMALL ========== */
+.small-widget{
+    padding:15px;
+    font-size:.9rem;
+}
+
+/* ========== ROBLOX SCROLL ========== */
+.scroll-box{
+    height:220px;
+    overflow-y:auto;
     border-radius:16px;
-    margin-top:10px;
+    background:#f1f7ff;
+    padding:10px;
 }
 
-.locked{
-    background:#f3f3f3;
-    padding:30px;
-    text-align:center;
-    border-radius:16px;
+.player{
+    padding:10px;
+    background:white;
+    margin-bottom:8px;
+    border-radius:12px;
+    display:flex;
+    justify-content:space-between;
 }
 
+/* ========== FORM ========== */
 input,textarea,select{
     width:100%;
-    margin-top:10px;
     padding:12px;
-    border-radius:14px;
-    border:1px solid #ddd;
+    margin-top:10px;
+    border-radius:12px;
+    border:1px solid #cbd5e1;
 }
 
 button{
     width:100%;
-    margin-top:12px;
     padding:14px;
+    margin-top:12px;
     border:none;
-    border-radius:14px;
-    background:#4f46e5;
+    border-radius:12px;
+    background:#3b82f6;
     color:white;
     font-weight:600;
     cursor:pointer;
 }
 
 button:hover{
-    background:#4338ca;
+    background:#2563eb;
 }
 
+/* ========== POPUP ========== */
 .popup{
     position:fixed;
     top:20px;
     right:20px;
     background:#22c55e;
     color:white;
-    padding:14px 18px;
-    border-radius:14px;
+    padding:12px 16px;
+    border-radius:12px;
     display:none;
-}
-
-.small{
-    font-size:.9rem;
-    opacity:.8;
 }
 
 </style>
@@ -112,37 +150,51 @@ button:hover{
 
 <body>
 
+<!-- LOADING SCREEN -->
+<div id="loading">
+    <div class="spinner"></div>
+    <p style="margin-top:15px;">Loading You've Got Talent...</p>
+</div>
+
 <div class="popup" id="popup">🎉 Appeal Submitted!</div>
 
 <div class="header">
     <h1>🎤 You've Got Talent</h1>
-    <p class="small">Home of the talent show</p>
+    <p>Blue aesthetic talent hub</p>
 </div>
 
 <div class="dashboard">
 
-<!-- LEFT -->
+<!-- WELCOME -->
 <div class="widget">
-
     <h2>👋 Welcome</h2>
-    <p>Welcome to You've Got Talent - Home of the talent show.</p>
-
-    <div class="announcement">
-        📌 Sneak peeks are being posted more than ever!
-    </div>
-
-    <h2 style="margin-top:20px;">🎊 Events</h2>
-    <p class="small">No upcoming events.</p>
-
+    <p>Welcome to You've Got Talent — the home of creativity and talent.</p>
 </div>
 
-<!-- RIGHT -->
+<!-- ANNOUNCEMENTS -->
 <div class="widget">
+    <h2>📌 Announcements</h2>
+    <p>• Sneak peeks coming soon</p>
+</div>
 
-    <h2>🗓️ Activity Tracker</h2>
-    <div class="locked">🔒 You can't see this page!</div>
+<!-- EVENTS (SMALL) -->
+<div class="widget small-widget">
+    <h2>🎊 Events</h2>
+    <p>No upcoming events.</p>
+</div>
 
-    <h2 style="margin-top:20px;">🚨 Ban Appeals</h2>
+<!-- ACTIVITY TRACKER (ROBLOX STYLE LIST) -->
+<div class="widget">
+    <h2>📊 Roblox Activity Tracker (Top 100)</h2>
+
+    <div class="scroll-box" id="playerList">
+        <!-- filled by JS -->
+    </div>
+</div>
+
+<!-- BAN APPEALS -->
+<div class="widget">
+    <h2>🚨 Ban Appeals</h2>
 
     <form id="appealForm">
 
@@ -153,7 +205,7 @@ button:hover{
 
         <textarea id="future" placeholder="How will you improve?" required></textarea>
 
-        <select id="tos" required>
+        <select id="tos">
             <option value="">Agree to TOS?</option>
             <option>Yes</option>
             <option>No</option>
@@ -168,32 +220,55 @@ button:hover{
 </div>
 
 <script>
-document.getElementById("appealForm").addEventListener("submit", async (e) => {
+
+/* ========== LOADING SCREEN ========== */
+setTimeout(()=>{
+    document.getElementById("loading").style.display="none";
+},10000);
+
+/* ========== POPUP ========== */
+function showPopup(){
+    const p=document.getElementById("popup");
+    p.style.display="block";
+    setTimeout(()=>p.style.display="none",3000);
+}
+
+/* ========== FORM ========== */
+document.getElementById("appealForm").addEventListener("submit", async (e)=>{
+
     e.preventDefault();
 
-    const data = {
-        discord: discord.value,
-        roblox: roblox.value,
-        reason: reason.value,
-        future: future.value,
-        tos: tos.value
+    const data={
+        discord:discord.value,
+        roblox:roblox.value,
+        reason:reason.value,
+        future:future.value,
+        tos:tos.value
     };
 
-    await fetch("/api/appeal", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(data)
+    await fetch("/api/appeal",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(data)
     });
 
     document.getElementById("appealForm").reset();
-
-    const popup = document.getElementById("popup");
-    popup.style.display = "block";
-
-    setTimeout(() => {
-        popup.style.display = "none";
-    }, 3000);
+    showPopup();
 });
+
+/* ========== MOCK ROBLOX TOP 100 ========== */
+const players = document.getElementById("playerList");
+
+for(let i=1;i<=100;i++){
+    const div=document.createElement("div");
+    div.className="player";
+    div.innerHTML=`
+        <span>Player_${i}</span>
+        <span>⭐ ${Math.floor(Math.random()*5000)}</span>
+    `;
+    players.appendChild(div);
+}
+
 </script>
 
 </body>
