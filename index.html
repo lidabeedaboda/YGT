@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,190 +6,193 @@
 <title>You've Got Talent</title>
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Fredoka',sans-serif;}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Fredoka',sans-serif;
+}
+
 body{
-min-height:100vh;
-padding:30px;
-color:white;
-background:#030712;
-overflow-x:hidden;
+    min-height:100vh;
+    padding:30px;
+    background:#f4f7ff;
+    color:#111;
 }
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 20%, rgba(124,58,237,.35), transparent 30%),
-radial-gradient(circle at 80% 10%, rgba(250,204,21,.15), transparent 25%),
-radial-gradient(circle at 50% 80%, rgba(59,130,246,.15), transparent 30%);
-pointer-events:none;
-}
-.dashboard{
-max-width:1400px;
-margin:auto;
-display:grid;
-grid-template-columns:1.6fr 1fr;
-gap:24px;
-}
-.widget{
-background:rgba(8,15,40,.85);
-border:1px solid rgba(255,255,255,.08);
-border-radius:32px;
-padding:28px;
-backdrop-filter:blur(16px);
-box-shadow:0 0 40px rgba(59,130,246,.08);
-}
-.widget h2{margin-bottom:16px;}
-.large{min-height:360px;}
-.medium{min-height:260px;}
-.announcement{
-padding:18px;
-background:rgba(255,255,255,.05);
-border-radius:20px;
-margin-top:12px;
-}
-.locked{
-display:flex;
-justify-content:center;
-align-items:center;
-height:220px;
-background:rgba(255,255,255,.04);
-border-radius:20px;
-font-size:1.2rem;
-}
-input,textarea,select{
-width:100%;
-margin-top:12px;
-padding:14px;
-border:none;
-border-radius:16px;
-background:rgba(255,255,255,.07);
-color:white;
-}
-textarea{min-height:120px;}
-button{
-width:100%;
-margin-top:14px;
-padding:16px;
-border:none;
-border-radius:16px;
-font-weight:700;
-cursor:pointer;
-background:linear-gradient(90deg,#facc15,#f59e0b);
-}
-.success{
-display:none;
-margin-top:14px;
-padding:14px;
-background:#22c55e;
-border-radius:16px;
-}
+
 .header{
-max-width:1400px;
-margin:0 auto 24px auto;
+    text-align:center;
+    margin-bottom:20px;
 }
-.header h1{font-size:3rem;}
-.bottom{
-display:grid;
-grid-template-columns:1fr 1.4fr;
-gap:24px;
-grid-column:1/-1;
+
+.header h1{
+    font-size:2.8rem;
 }
-@media(max-width:900px){
-.dashboard,.bottom{grid-template-columns:1fr;}
+
+.dashboard{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1.6fr 1fr;
+    gap:20px;
 }
+
+.widget{
+    background:white;
+    border-radius:24px;
+    padding:22px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+h2{
+    margin-bottom:12px;
+}
+
+.announcement{
+    background:#f1f5ff;
+    padding:14px;
+    border-radius:16px;
+    margin-top:10px;
+}
+
+.locked{
+    background:#f3f3f3;
+    padding:30px;
+    text-align:center;
+    border-radius:16px;
+}
+
+input,textarea,select{
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    border-radius:14px;
+    border:1px solid #ddd;
+}
+
+button{
+    width:100%;
+    margin-top:12px;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:#4f46e5;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#4338ca;
+}
+
+.popup{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#22c55e;
+    color:white;
+    padding:14px 18px;
+    border-radius:14px;
+    display:none;
+}
+
+.small{
+    font-size:.9rem;
+    opacity:.8;
+}
+
 </style>
 </head>
+
 <body>
 
+<div class="popup" id="popup">🎉 Appeal Submitted!</div>
+
 <div class="header">
-<h1>🎤 You've Got Talent</h1>
-<p>Home of the talent show</p>
+    <h1>🎤 You've Got Talent</h1>
+    <p class="small">Home of the talent show</p>
 </div>
 
 <div class="dashboard">
 
-<div class="widget large">
-<h2>👋 Welcome</h2>
-<p>Welcome to You've Got Talent - Home of the talent show.</p>
-
-<div class="announcement">
-<h3>📌 Pinned Announcements</h3>
-<p>• Sneak peaks are being posted more than ever now!</p>
-</div>
-</div>
-
-<div class="widget large">
-<h2>🗓️ Activity Tracker</h2>
-<div class="locked">
-🔒 You can't see this page!
-</div>
-</div>
-
-<div class="bottom">
-
-<div class="widget medium">
-<h2>🎊 Events</h2>
-<p>No upcoming events.</p>
-</div>
-
+<!-- LEFT -->
 <div class="widget">
-<h2>🚨 Ban Appeals</h2>
 
-<form id="appealForm">
-<input type="text" id="discord" placeholder="Discord Username & ID" required>
-<input type="text" id="roblox" placeholder="Roblox Username & ID" required>
+    <h2>👋 Welcome</h2>
+    <p>Welcome to You've Got Talent - Home of the talent show.</p>
 
-<textarea id="reason" placeholder="Why were you moderated?" required></textarea>
+    <div class="announcement">
+        📌 Sneak peeks are being posted more than ever!
+    </div>
 
-<textarea id="future" placeholder="What can you do in the future to improve?" required></textarea>
-
-<select id="tos" required>
-<option value="">Do you agree to follow all You've Got Talent TOS?</option>
-<option value="Yes">Yes</option>
-<option value="No">No</option>
-</select>
-
-<button type="submit">Submit Appeal</button>
-</form>
-
-<div class="success" id="successMessage">
-Thank you for submitting your appeal. Your appeal status will be sent to you.
-</div>
-</div>
+    <h2 style="margin-top:20px;">🎊 Events</h2>
+    <p class="small">No upcoming events.</p>
 
 </div>
+
+<!-- RIGHT -->
+<div class="widget">
+
+    <h2>🗓️ Activity Tracker</h2>
+    <div class="locked">🔒 You can't see this page!</div>
+
+    <h2 style="margin-top:20px;">🚨 Ban Appeals</h2>
+
+    <form id="appealForm">
+
+        <input id="discord" placeholder="Discord Username & ID" required>
+        <input id="roblox" placeholder="Roblox Username & ID" required>
+
+        <textarea id="reason" placeholder="Why were you moderated?" required></textarea>
+
+        <textarea id="future" placeholder="How will you improve?" required></textarea>
+
+        <select id="tos" required>
+            <option value="">Agree to TOS?</option>
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+
+        <button type="submit">Submit Appeal</button>
+
+    </form>
+
+</div>
+
 </div>
 
 <script>
-document.getElementById("appealForm").addEventListener("submit", async (e)=>{
-e.preventDefault();
+document.getElementById("appealForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-const data={
-discord:discord.value,
-roblox:roblox.value,
-reason:reason.value,
-future:future.value,
-tos:tos.value
-};
+    const data = {
+        discord: discord.value,
+        roblox: roblox.value,
+        reason: reason.value,
+        future: future.value,
+        tos: tos.value
+    };
 
-try{
-const response=await fetch("/api/appeal",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify(data)
-});
+    await fetch("/api/appeal", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(data)
+    });
 
-if(!response.ok) throw new Error();
+    document.getElementById("appealForm").reset();
 
-document.getElementById("successMessage").style.display="block";
-document.getElementById("appealForm").reset();
-}catch{
-alert("Unable to submit appeal.");
-}
+    const popup = document.getElementById("popup");
+    popup.style.display = "block";
+
+    setTimeout(() => {
+        popup.style.display = "none";
+    }, 3000);
 });
 </script>
 
