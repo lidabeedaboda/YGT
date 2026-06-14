@@ -11,20 +11,20 @@
 
 <style>
 
-/* ========== LOADING SCREEN ========== */
-#loading {
+/* ================= LOADING ================= */
+#loading{
     position:fixed;
     inset:0;
-    background:linear-gradient(135deg,#60a5fa,#3b82f6);
+    background:linear-gradient(135deg,#60a5fa,#93c5fd);
     display:flex;
-    justify-content:center;
-    align-items:center;
     flex-direction:column;
-    color:white;
+    align-items:center;
+    justify-content:center;
     z-index:9999;
+    color:white;
 }
 
-.spinner {
+.spinner{
     width:60px;
     height:60px;
     border:6px solid rgba(255,255,255,.3);
@@ -33,11 +33,11 @@
     animation:spin 1s linear infinite;
 }
 
-@keyframes spin {
-    100% { transform:rotate(360deg); }
+@keyframes spin{
+    100%{transform:rotate(360deg);}
 }
 
-/* ========== MAIN THEME ========== */
+/* ================= BASE ================= */
 *{
     margin:0;
     padding:0;
@@ -48,13 +48,13 @@
 body{
     background:#eaf4ff;
     color:#0f172a;
-    padding:30px;
+    padding:25px;
 }
 
-/* ========== HEADER ========== */
+/* ================= HEADER ================= */
 .header{
     text-align:center;
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
 .header h1{
@@ -62,7 +62,7 @@ body{
     color:#2563eb;
 }
 
-/* ========== DASHBOARD GRID ========== */
+/* ================= GRID ================= */
 .dashboard{
     max-width:1300px;
     margin:auto;
@@ -71,7 +71,7 @@ body{
     gap:18px;
 }
 
-/* ========== WIDGETS ========== */
+/* ================= WIDGET ================= */
 .widget{
     background:white;
     border-radius:22px;
@@ -84,31 +84,39 @@ h2{
     margin-bottom:10px;
 }
 
-/* ========== EVENTS SMALL ========== */
-.small-widget{
-    padding:15px;
-    font-size:.9rem;
+/* ================= ANNOUNCEMENTS ================= */
+.announcement{
+    background:#eff6ff;
+    padding:12px;
+    border-radius:14px;
+    margin-top:10px;
 }
 
-/* ========== ROBLOX SCROLL ========== */
+/* ================= SMALL EVENTS ================= */
+.small{
+    font-size:.9rem;
+    opacity:.8;
+}
+
+/* ================= ROBLOX LIST ================= */
 .scroll-box{
-    height:220px;
+    height:260px;
     overflow-y:auto;
-    border-radius:16px;
     background:#f1f7ff;
     padding:10px;
+    border-radius:14px;
 }
 
 .player{
-    padding:10px;
-    background:white;
-    margin-bottom:8px;
-    border-radius:12px;
     display:flex;
     justify-content:space-between;
+    padding:10px;
+    background:white;
+    border-radius:12px;
+    margin-bottom:8px;
 }
 
-/* ========== FORM ========== */
+/* ================= FORM ================= */
 input,textarea,select{
     width:100%;
     padding:12px;
@@ -119,8 +127,8 @@ input,textarea,select{
 
 button{
     width:100%;
-    padding:14px;
     margin-top:12px;
+    padding:14px;
     border:none;
     border-radius:12px;
     background:#3b82f6;
@@ -133,7 +141,7 @@ button:hover{
     background:#2563eb;
 }
 
-/* ========== POPUP ========== */
+/* ================= POPUP ================= */
 .popup{
     position:fixed;
     top:20px;
@@ -158,38 +166,35 @@ button:hover{
 
 <div class="popup" id="popup">🎉 Appeal Submitted!</div>
 
+<!-- HEADER -->
 <div class="header">
     <h1>🎤 You've Got Talent</h1>
-    <p>Blue aesthetic talent hub</p>
+    <p>Light Blue Talent Hub</p>
 </div>
 
+<!-- DASHBOARD -->
 <div class="dashboard">
 
 <!-- WELCOME -->
 <div class="widget">
     <h2>👋 Welcome</h2>
-    <p>Welcome to You've Got Talent — the home of creativity and talent.</p>
+    <p>Welcome to You've Got Talent — the home of creativity and talent shows.</p>
+
+    <div class="announcement">
+        📌 Sneak peeks are being posted more than ever!
+    </div>
 </div>
 
-<!-- ANNOUNCEMENTS -->
+<!-- EVENTS -->
 <div class="widget">
-    <h2>📌 Announcements</h2>
-    <p>• Sneak peeks coming soon</p>
-</div>
-
-<!-- EVENTS (SMALL) -->
-<div class="widget small-widget">
     <h2>🎊 Events</h2>
-    <p>No upcoming events.</p>
+    <p class="small">No upcoming events.</p>
 </div>
 
-<!-- ACTIVITY TRACKER (ROBLOX STYLE LIST) -->
+<!-- ROBLOX TRACKER -->
 <div class="widget">
     <h2>📊 Roblox Activity Tracker (Top 100)</h2>
-
-    <div class="scroll-box" id="playerList">
-        <!-- filled by JS -->
-    </div>
+    <div class="scroll-box" id="playerList"></div>
 </div>
 
 <!-- BAN APPEALS -->
@@ -205,7 +210,7 @@ button:hover{
 
         <textarea id="future" placeholder="How will you improve?" required></textarea>
 
-        <select id="tos">
+        <select id="tos" required>
             <option value="">Agree to TOS?</option>
             <option>Yes</option>
             <option>No</option>
@@ -219,21 +224,22 @@ button:hover{
 
 </div>
 
+<!-- SCRIPT -->
 <script>
 
-/* ========== LOADING SCREEN ========== */
+/* ================= LOADING SCREEN ================= */
 setTimeout(()=>{
     document.getElementById("loading").style.display="none";
 },10000);
 
-/* ========== POPUP ========== */
+/* ================= POPUP ================= */
 function showPopup(){
     const p=document.getElementById("popup");
     p.style.display="block";
     setTimeout(()=>p.style.display="none",3000);
 }
 
-/* ========== FORM ========== */
+/* ================= FORM ================= */
 document.getElementById("appealForm").addEventListener("submit", async (e)=>{
 
     e.preventDefault();
@@ -256,18 +262,37 @@ document.getElementById("appealForm").addEventListener("submit", async (e)=>{
     showPopup();
 });
 
-/* ========== MOCK ROBLOX TOP 100 ========== */
-const players = document.getElementById("playerList");
+/* ================= REAL ROBLOX LEADERBOARD ================= */
+async function loadPlayers(){
 
-for(let i=1;i<=100;i++){
-    const div=document.createElement("div");
-    div.className="player";
-    div.innerHTML=`
-        <span>Player_${i}</span>
-        <span>⭐ ${Math.floor(Math.random()*5000)}</span>
-    `;
-    players.appendChild(div);
+    try{
+
+        const res = await fetch("/api/players");
+        const data = await res.json();
+
+        const box = document.getElementById("playerList");
+        box.innerHTML="";
+
+        data.forEach((p,i)=>{
+
+            const div=document.createElement("div");
+            div.className="player";
+
+            div.innerHTML=`
+                <span>#${i+1} ${p.username}</span>
+                <span>⭐ ${p.score}</span>
+            `;
+
+            box.appendChild(div);
+        });
+
+    }catch(err){
+        console.log("Leaderboard error",err);
+    }
 }
+
+setInterval(loadPlayers,5000);
+loadPlayers();
 
 </script>
 
