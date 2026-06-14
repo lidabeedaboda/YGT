@@ -1,58 +1,50 @@
 let players = global.players || {};
 global.players = players;
 
-const RESET_TIME = 7 * 24 * 60 * 60 * 1000;
+const RESET = 7 * 24 * 60 * 60 * 1000;
 
-// reset system
 if (!global.resetTime) {
-    global.resetTime = Date.now() + RESET_TIME;
+    global.resetTime = Date.now() + RESET;
 }
 
-export default function handler(req, res) {
+export default function handler(req,res){
 
-    // RESET CHECK
-    if (Date.now() > global.resetTime) {
+    if(Date.now() > global.resetTime){
         global.players = {};
         players = global.players;
-        global.resetTime = Date.now() + RESET_TIME;
+        global.resetTime = Date.now() + RESET;
     }
 
-    // ADD PLAYER DATA
-    if (req.method === "POST") {
+    if(req.method === "POST"){
 
-        const { username, userId, minutes, rank } = req.body;
+        const {username,userId,minutes,rank} = req.body;
 
-        if (!username || !userId) {
-            return res.status(400).json({ error: "Missing data" });
-        }
-
-        if (!players[userId]) {
-            players[userId] = {
+        if(!players[userId]){
+            players[userId]={
                 username,
                 userId,
-                minutes: 0,
-                rank: rank || "Guest"
+                minutes:0,
+                rank:"Guest"
             };
         }
 
-        players[userId].minutes += minutes || 0;
-        players[userId].rank = rank || players[userId].rank;
+        if(minutes) players[userId].minutes += minutes;
+        if(rank) players[userId].rank = rank;
 
-        return res.json({ success: true });
+        return res.json({ok:true});
     }
 
-    // GET LEADERBOARD
-    if (req.method === "GET") {
+    if(req.method === "GET"){
 
         const list = Object.values(players)
-            .sort((a, b) => b.minutes - a.minutes)
-            .slice(0, 100);
+        .sort((a,b)=>b.minutes-a.minutes)
+        .slice(0,100);
 
         return res.json({
-            resetAt: global.resetTime,
-            players: list
+            players:list,
+            resetAt:global.resetTime
         });
     }
 
-    return res.status(405).json({ error: "Method not allowed" });
+    res.status(405).end();
 }
