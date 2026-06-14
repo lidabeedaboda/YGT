@@ -1,42 +1,57 @@
-let players = global.players || [];
+let players = global.players || {};
 global.players = players;
+
+const RESET_TIME = 7 * 24 * 60 * 60 * 1000;
+
+// reset system
+if (!global.resetTime) {
+    global.resetTime = Date.now() + RESET_TIME;
+}
 
 export default function handler(req, res) {
 
-    // ADD PLAYER (from Roblox)
+    // RESET CHECK
+    if (Date.now() > global.resetTime) {
+        global.players = {};
+        players = global.players;
+        global.resetTime = Date.now() + RESET_TIME;
+    }
+
+    // ADD PLAYER DATA
     if (req.method === "POST") {
 
-        const { username, userId } = req.body;
+        const { username, userId, minutes, rank } = req.body;
 
         if (!username || !userId) {
             return res.status(400).json({ error: "Missing data" });
         }
 
-        // prevent duplicates
-        const existing = players.find(p => p.userId === userId);
-
-        if (existing) {
-            existing.lastSeen = Date.now();
-        } else {
-            players.push({
+        if (!players[userId]) {
+            players[userId] = {
                 username,
                 userId,
-                score: Math.floor(Math.random() * 5000),
-                lastSeen: Date.now()
-            });
+                minutes: 0,
+                rank: rank || "Guest"
+            };
         }
+
+        players[userId].minutes += minutes || 0;
+        players[userId].rank = rank || players[userId].rank;
 
         return res.json({ success: true });
     }
 
-    // GET TOP 100 (for website)
+    // GET LEADERBOARD
     if (req.method === "GET") {
 
-        const sorted = players
-            .sort((a, b) => b.score - a.score)
+        const list = Object.values(players)
+            .sort((a, b) => b.minutes - a.minutes)
             .slice(0, 100);
 
-        return res.json(sorted);
+        return res.json({
+            resetAt: global.resetTime,
+            players: list
+        });
     }
 
     return res.status(405).json({ error: "Method not allowed" });
